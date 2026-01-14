@@ -119,10 +119,10 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded bg-primary text-primary-foreground px-4 py-2 font-medium hover:bg-primary/90 active:bg-primary/90 cursor-pointer;
+    @apply justify-center rounded bg-primary text-primary-foreground px-4 py-2 font-medium hover:bg-primary/90 active:bg-primary/90 cursor-pointer;
   }
 
   .badge {
-    @apply inline-flex items-center rounded border px-2 py-0.5 text-[10px] font-semibold;
+    @apply rounded border px-2 py-0.5 text-[10px] font-semibold;
   }
 }
