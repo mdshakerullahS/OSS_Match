@@ -28,12 +28,6 @@
   --border: 226 232 240;
   --ring: 37 99 235;
 
-  /* GitMatch-specific tokens */
-  --good-first: 112 87 255;
-  --enhancement: 162 238 239;
-  --docs: 0 117 202;
-  --help: 0 134 114;
-
   /* Language colors */
   --js: 247 223 30;
   --ts: 49 120 198;
@@ -99,11 +93,6 @@
   --color-border: rgb(var(--border));
   --color-ring: rgb(var(--ring));
 
-  --color-good-first: rgb(var(--good-first));
-  --color-enhancement: rgb(var(--enhancement));
-  --color-docs: rgb(var(--docs));
-  --color-help: rgb(var(--help));
-
   --color-js: rgb(var(--js));
   --color-ts: rgb(var(--ts));
   --color-python: rgb(var(--python));
@@ -135,25 +124,5 @@
 
   .badge {
     @apply inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold;
-  }
-
-  .badge-bug {
-    @apply text-destructive border-destructive bg-destructive/15;
-  }
-
-  .badge-good-first {
-    @apply text-good-first border-good-first bg-good-first/15;
-  }
-
-  .badge-enhancement {
-    @apply text-enhancement border-enhancement bg-enhancement/15;
-  }
-
-  .badge-docs {
-    @apply text-docs border-docs bg-docs/15;
-  }
-
-  .badge-help {
-    @apply text-help border-help bg-help/15;
   }
 }
