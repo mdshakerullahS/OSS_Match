@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import Header from "@/components/header";
 import Issues from "@/components/issues";
 import Sidebar from "@/components/sidebar";
@@ -10,6 +11,7 @@ export default function Home() {
         <Sidebar />
         <Issues />
       </div>
+      <Footer />
     </>
   );
 }
