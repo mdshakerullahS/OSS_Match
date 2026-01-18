@@ -27,7 +27,9 @@ export default function Sidebar() {
           <select className="w-full bg-background border rounded-lg px-3 py-2 text-sm text-muted-foreground outline-none">
             <option value="">All Languages</option>
             {languages.map((l) => (
-              <option value={l}>{l}</option>
+              <option key={l} value={l}>
+                {l}
+              </option>
             ))}
           </select>
         </div>
@@ -38,7 +40,9 @@ export default function Sidebar() {
           <select className="w-full bg-background border rounded-lg px-3 py-2 text-sm text-muted-foreground outline-none">
             <option value="">Any Label</option>
             {labels.map((l) => (
-              <option value={l}>{l}</option>
+              <option key={l} value={l}>
+                {l}
+              </option>
             ))}
           </select>
         </div>
