@@ -1,3 +1,4 @@
+import { labels, languages } from "@/constants";
 import { Funnel, Search } from "lucide-react";
 
 export default function Sidebar() {
@@ -25,16 +26,9 @@ export default function Sidebar() {
           </label>
           <select className="w-full bg-background border rounded-lg px-3 py-2 text-sm text-muted-foreground outline-none">
             <option value="">All Languages</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="TypeScript">TypeScript</option>
-            <option value="Python">Python</option>
-            <option value="Rust">Rust</option>
-            <option value="Go">Go</option>
-            <option value="Java">Java</option>
-            <option value="C++">C++</option>
-            <option value="Ruby">Ruby</option>
-            <option value="PHP">PHP</option>
-            <option value="Swift">Swift</option>
+            {languages.map((l) => (
+              <option value={l}>{l}</option>
+            ))}
           </select>
         </div>
         <div>
@@ -43,12 +37,9 @@ export default function Sidebar() {
           </label>
           <select className="w-full bg-background border rounded-lg px-3 py-2 text-sm text-muted-foreground outline-none">
             <option value="">Any Label</option>
-            <option value="good first issue">good first issue</option>
-            <option value="help wanted">help wanted</option>
-            <option value="bug">bug</option>
-            <option value="enhancement">enhancement</option>
-            <option value="documentation">documentation</option>
-            <option value="hacktoberfest">hacktoberfest</option>
+            {labels.map((l) => (
+              <option value={l}>{l}</option>
+            ))}
           </select>
         </div>
         <div>
@@ -58,8 +49,6 @@ export default function Sidebar() {
           <select className="w-full bg-background border rounded-lg px-3 py-2 text-sm text-muted-foreground outline-none">
             <option value="created">Newest First</option>
             <option value="created-asc">Oldest First</option>
-            <option value="stars">Repo Popularity (Stars)</option>
-            <option value="comments">Most Discussed</option>
           </select>
         </div>
       </div>
