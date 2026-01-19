@@ -3,13 +3,17 @@
 import { GitHubIssue } from "@/types";
 import IssueCard from "./issueCard";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function Issues() {
+  const searchParams = useSearchParams();
+  const paramsString = searchParams.toString();
+
   const [issues, setIssues] = useState<GitHubIssue[]>([]);
 
   const fetchIssues = async () => {
     try {
-      const res = await fetch("/api/issues");
+      const res = await fetch(`/api/issues?${paramsString}`);
 
       const data = await res.json();
 
@@ -26,7 +30,7 @@ export default function Issues() {
 
   useEffect(() => {
     fetchIssues();
-  }, []);
+  }, [paramsString]);
 
   return (
     <div className="lg:max-h-[calc(100vh-106px)] lg:overflow-scroll lg:col-span-3 space-y-2">
@@ -34,7 +38,7 @@ export default function Issues() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
         {issues?.length &&
-          issues?.map((i, idx) => <IssueCard key={idx} issue={i} />)}
+          issues?.map((i) => <IssueCard key={i.id} issue={i} />)}
       </div>
     </div>
   );
