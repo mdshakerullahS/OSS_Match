@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Search } from "lucide-react";
+import { Github, Loader2, Search } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Header() {
@@ -24,9 +24,11 @@ export default function Header() {
           }
           className="btn-primary whitespace-nowrap"
         >
-          {status === "loading"
-            ? "Loading..."
-            : `Sign ${status === "unauthenticated" ? "In" : "Out"}`}
+          {status === "loading" ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            `Sign ${status === "unauthenticated" ? "In" : "Out"}`
+          )}
         </button>
       </div>
     </header>
