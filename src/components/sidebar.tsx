@@ -4,7 +4,7 @@ import { Funnel, Search } from "lucide-react";
 export default function Sidebar() {
   return (
     <aside className="lg:col-span-1 lg:h-full card p-5 space-y-6">
-      <form className="w-full max-w-md lg:hidden">
+      <form className="w-full max-w-md">
         <div className="flex w-full rounded border bg-background px-3 py-2 text-sm items-center gap-2">
           <Search size={16} className="text-muted-foreground" />
           <input
