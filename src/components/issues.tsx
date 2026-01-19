@@ -37,8 +37,9 @@ export default function Issues() {
       <div className="text-sm  font-medium text-muted-foreground">{`Found ${issues?.length} matched issues`}</div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
-        {issues?.length &&
-          issues?.map((i) => <IssueCard key={i.id} issue={i} />)}
+        {issues?.map((i) => (
+          <IssueCard key={i.id} issue={i} />
+        ))}
       </div>
     </div>
   );
