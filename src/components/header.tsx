@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Loader2, Search } from "lucide-react";
+import { Github, Loader2 } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Header() {
