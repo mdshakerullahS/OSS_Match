@@ -21,7 +21,7 @@ export default function Sidebar() {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const params = new URLSearchParams();
 
-    if (data.keywords) params.set("q", data.keywords);
+    if (data.keywords.trim()) params.set("q", data.keywords);
     if (data.language) params.set("language", data.language);
     if (data.label) params.set("label", data.label);
     if (data.sortBy) params.set("sort", data.sortBy);
