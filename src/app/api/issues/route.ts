@@ -4,15 +4,33 @@ import { authOptions } from "../auth/[...nextauth]/route";
 import { GitHubIssue } from "@/types";
 import { headers } from "next/headers";
 import { anonLimiter } from "@/lib/ratelimit";
+import { redis } from "@/lib/redis";
 
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
+    const { searchParams } = req.nextUrl;
+
+    const sortedParams = new URLSearchParams(searchParams);
+    sortedParams.sort();
+    const cacheKey = `issues:${sortedParams.toString() || "all"}`;
+    const cached = await redis.get<GitHubIssue[]>(cacheKey);
+
+    const ttl = await redis.ttl(cacheKey);
+    console.log("Upstash TTL:", ttl);
+
+    if (cached) {
+      return NextResponse.json(
+        { success: true, issues: cached, source: "Cache" },
+        { status: 200 },
+      );
+    }
+
     const token = session?.githubAccessToken || process.env.GITHUB_ACCESS_TOKEN;
     const isUser = !!session?.githubAccessToken;
 
-    const ip = (await headers()).get("x-forwarded-for") || "unknown";
+    const ip = (await headers()).get("x-forwarded-for") || "anonymous";
     const { success } = await anonLimiter.limit(ip);
 
     if (!isUser) {
@@ -28,7 +46,6 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const { searchParams } = req.nextUrl;
     const q = searchParams.get("q");
     const label = searchParams.get("label");
     const language = searchParams.get("language");
@@ -51,7 +68,6 @@ export async function GET(req: NextRequest) {
     );
 
     const data = await githubResponse.json();
-    console.log(data.message);
 
     if (!githubResponse.ok) {
       return NextResponse.json(
@@ -89,9 +105,12 @@ export async function GET(req: NextRequest) {
       };
     });
 
-    console.log(issues);
+    await redis.set(cacheKey, issues, { ex: 300 });
 
-    return NextResponse.json({ success: true, issues }, { status: 200 });
+    return NextResponse.json(
+      { success: true, issues, source: "API" },
+      { status: 200 },
+    );
   } catch {
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
