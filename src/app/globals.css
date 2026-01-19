@@ -126,3 +126,15 @@
     @apply rounded-full border px-2 py-0.5 text-[10px] font-semibold;
   }
 }
+
+html,
+body,
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

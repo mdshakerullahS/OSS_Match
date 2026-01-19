@@ -40,7 +40,7 @@ export default function Issues() {
   }, [paramsString]);
 
   return (
-    <div className="lg:max-h-[calc(100vh-106px)] lg:overflow-scroll lg:col-span-3 space-y-2">
+    <div className="lg:max-h-[calc(100vh-106px)] lg:overflow-scroll lg:col-span-3 space-y-2 hide-scrollbar">
       <div className="text-sm  font-medium text-muted-foreground">{`Found ${issues?.length} matched issues`}</div>
 
       {isLoading && (
