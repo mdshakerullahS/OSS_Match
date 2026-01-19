@@ -15,16 +15,6 @@ export default function Header() {
           </div>
           <h1 className="text-2xl font-bold">OSS Match</h1>
         </div>
-        <form className="w-full max-w-md hidden lg:block">
-          <div className="flex w-full rounded border bg-background px-3 py-2 text-sm items-center gap-2">
-            <Search size={16} className="text-muted-foreground" />
-            <input
-              placeholder="Keywords (e.g. react, docker, authentication...)"
-              type="text"
-              className="w-full placeholder:text-muted-foreground outline-none"
-            />
-          </div>
-        </form>
 
         <button
           onClick={() =>
