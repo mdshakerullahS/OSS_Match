@@ -2,52 +2,68 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { GitHubIssue } from "@/types";
+import { headers } from "next/headers";
+import { anonLimiter } from "@/lib/ratelimit";
 
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.githubAccessToken) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 },
-      );
+    const token = session?.githubAccessToken || process.env.GITHUB_ACCESS_TOKEN;
+    const isUser = !!session?.githubAccessToken;
+
+    const ip = (await headers()).get("x-forwarded-for") || "unknown";
+    const { success } = await anonLimiter.limit(ip);
+
+    if (!isUser) {
+      if (!success) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Rate limit exceeded",
+            suggestion: "Sign in with GitHub to get more limits(5000req/hr)",
+          },
+          { status: 429 },
+        );
+      }
     }
 
     const { searchParams } = req.nextUrl;
-
-    let githubQuery = "state:open";
-
     const q = searchParams.get("q");
     const label = searchParams.get("label");
     const language = searchParams.get("language");
 
-    if (label) githubQuery += ` label:"${label}"`;
-    if (language) githubQuery += ` language:${language}`;
-    if (q) githubQuery += ` ${q}`;
+    const queryParts = ["state:open", "is:issue"];
+    if (q) queryParts.push(q);
+    if (label) queryParts.push(`label:"${label}"`);
+    if (language) queryParts.push(`language:${language}`);
 
-    const githubToken = session.githubAccessToken;
+    const githubQuery = queryParts.join(" ");
 
     const githubResponse = await fetch(
       `https://api.github.com/search/issues?q=${encodeURIComponent(githubQuery)}`,
       {
         headers: {
-          Authorization: `token ${githubToken}`,
+          Authorization: `Bearer ${token}`,
           Accept: "application/vnd.github.v3+json",
         },
       },
     );
 
+    const data = await githubResponse.json();
+    console.log(data.message);
+
     if (!githubResponse.ok) {
       return NextResponse.json(
-        { success: false, error: "Failed to fetch GitHub issues" },
+        {
+          success: false,
+          error: data.message || "Failed to fetch GitHub issues",
+        },
         { status: githubResponse.status },
       );
     }
 
-    const { items } = await githubResponse.json();
-
-    const issues: GitHubIssue[] = items?.map((i: any) => {
+    const issues: GitHubIssue[] = data.items?.map((i: any) => {
       const repoName = i.repository_url.split("/").slice(4).join("/");
 
       return {
@@ -72,6 +88,8 @@ export async function GET(req: NextRequest) {
         body: i.body,
       };
     });
+
+    console.log(issues);
 
     return NextResponse.json({ success: true, issues }, { status: 200 });
   } catch {
