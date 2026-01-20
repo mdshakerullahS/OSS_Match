@@ -41,7 +41,9 @@ export default function Issues() {
 
   return (
     <div className="lg:max-h-[calc(100vh-106px)] lg:overflow-scroll lg:col-span-3 space-y-2 hide-scrollbar">
-      <div className="text-sm  font-medium text-muted-foreground">{`Found ${issues?.length} matched issues`}</div>
+      <div
+        className={`text-sm font-medium text-muted-foreground ${(isLoading || error) && "hidden"}`}
+      >{`Found ${issues?.length} matched issues`}</div>
 
       {isLoading && (
         <div className="flex flex-col items-center justify-center py-20 text-muted-foreground gap-3">
