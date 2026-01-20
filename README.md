@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OSS Match 🚀
 
-## Getting Started
+**OSS Match** is a GitHub API–powered platform that matches developers with relevant open-source issues based on their interests and skills. It’s built with a modern full-stack setup focused on performance, scalability, and developer experience.
 
-First, run the development server:
+---
+
+## ✨ Features
+
+- 🔐 **Authentication**
+  - Secure authentication using **NextAuth**
+  - OAuth login with **GitHub**
+
+- 🧠 **Smart Issue Matching**
+  - Fetches and filters GitHub issues using the GitHub API
+  - Helps developers discover meaningful open-source contributions
+
+- 🎛️ **Advanced Filtering**
+  - Filter issues by labels (e.g. `good first issue`, `help wanted`) & languages (e.g. `TypeScript`, `Python`)
+  - Keyword search for precise issue discovery
+
+- 🗄️ **Database**
+  - **PostgreSQL** for reliable data storage
+  - **Prisma ORM** for type-safe and efficient database access
+
+- ⚡ **Caching & Rate Limiting**
+  - **Upstash Redis** for caching GitHub API responses
+  - **Upstash Rate Limiting** to prevent abuse and stay within API limits (For unauthenticated users)
+
+- 📝 **Form Handling**
+  - Robust and accessible form handling with **React Hook Form**
+
+- 🚀 **Performance-Focused**
+  - Reduced API calls via caching
+  - Optimized queries with Prisma
+  - Secure and scalable architecture
+
+---
+
+## 🛠️ Tech Stack
+
+- **Language:** TypeScript
+- **Framework:** Next.js
+- **Auth:** NextAuth.js (GitHub OAuth)
+- **Database:** PostgreSQL
+- **ORM:** Prisma
+- **Caching:** Upstash Redis
+- **Rate Limiting:** Upstash Rate Limiting
+- **Forms:** React Hook Form
+- **API:** GitHub REST API
+
+---
+
+## 📦 Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/mdshakerullahS/OSS_Match.git
+cd OSS_Match
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔐 Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a .env file and add:
 
-## Learn More
+```bash
+GITHUB_ID=
+GITHUB_SECRET=
 
-To learn more about Next.js, take a look at the following resources:
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+DATABASE_URL=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+GITHUB_ACCESS_TOKEN=
 
-## Deploy on Vercel
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ▶️ Running the Project
+
+```bash
+npx prisma migrate dev
+npm run dev
+```
+
+App will be available at:
+http://localhost:3000
+
+---
+
+## 📸 Screenshot
+
+![Preview](Screenshot.png)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+See the `LICENSE` file for full details.
+
+---
+
+## 🧑‍💻 Developer
+
+**Md Shakerullah Sourov** Full Stack Developer
+
+- LinkedIn: [https://linkedin.com/in/mdshakerullah](https://linkedin.com/in/mdshakerullah)
+- Email: [sourovmdshakerullah@gmail.com](mailto:sourovmdshakerullah@gmail.com)
+
+---
+
+## ⭐ Show Your Support
+
+If you like this project, please give it a ⭐ on GitHub!
+
+Happy Coding 🚀
+
+---
