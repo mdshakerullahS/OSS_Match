@@ -1,20 +1,15 @@
 import { GitHubIssue } from "@/types";
-import { MessageSquareText, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-type IssueCardProp = {
-  issue: GitHubIssue;
-};
-
-export default function IssueCard({ issue }: IssueCardProp) {
+export default function IssueCard({ issue }: { issue: GitHubIssue }) {
   const formattedDate = new Date(issue.created_at).toLocaleDateString(
     undefined,
     {
       month: "short",
       day: "numeric",
       year: "numeric",
-    }
+    },
   );
 
   return (
