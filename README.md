@@ -47,6 +47,7 @@
 - **Rate Limiting:** Upstash Rate Limiting
 - **Forms:** React Hook Form
 - **API:** GitHub REST API
+- **Containerization:** Docker
 
 ---
 
@@ -55,7 +56,7 @@
 ```bash
 git clone https://github.com/mdshakerullahS/OSS_Match.git
 cd OSS_Match
-npm install
+npm install # If running without Docker
 ```
 
 ---
@@ -65,15 +66,30 @@ npm install
 Create a .env file and add:
 
 ```bash
+# With Docker
 GITHUB_ID=
 GITHUB_SECRET=
-
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET=
 
+GITHUB_ACCESS_TOKEN=
+
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_DB=
 DATABASE_URL=
 
+REDIS_URL=
+
+# Without Docker
+GITHUB_ID=
+GITHUB_SECRET=
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET=
+
 GITHUB_ACCESS_TOKEN=
+
+DATABASE_URL=
 
 UPSTASH_REDIS_REST_URL=
 UPSTASH_REDIS_REST_TOKEN=
@@ -84,6 +100,11 @@ UPSTASH_REDIS_REST_TOKEN=
 ## ▶️ Running the Project
 
 ```bash
+#With Docker
+docker compose exec app npx prisma migrate dev
+docker compose up --build
+
+# Without Docker
 npx prisma migrate dev
 npm run dev
 ```
