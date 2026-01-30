@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { GitHubIssue } from "@/types";
 import { headers } from "next/headers";
-import { anonLimiter } from "@/lib/ratelimit";
+import { rateLimiter } from "@/lib/ratelimit";
 import { redis } from "@/lib/redis";
 
 export async function GET(req: NextRequest) {
@@ -14,15 +14,18 @@ export async function GET(req: NextRequest) {
 
     const sortedParams = new URLSearchParams(searchParams);
     sortedParams.sort();
-    const cacheKey = `issues:${sortedParams.toString() || "all"}`;
-    const cached = await redis.get<GitHubIssue[]>(cacheKey);
 
-    const ttl = await redis.ttl(cacheKey);
-    console.log("Upstash TTL:", ttl);
+    const cacheKey = `issues:${sortedParams.toString() || "all"}`;
+
+    const cached = await redis.get<GitHubIssue[]>(cacheKey);
 
     if (cached) {
       return NextResponse.json(
-        { success: true, issues: cached, source: "Cache" },
+        {
+          success: true,
+          issues: cached,
+          source: "Cache",
+        },
         { status: 200 },
       );
     }
@@ -31,15 +34,21 @@ export async function GET(req: NextRequest) {
     const isUser = !!session?.githubAccessToken;
 
     const ip = (await headers()).get("x-forwarded-for") || "anonymous";
-    const { success } = await anonLimiter.limit(ip);
 
-    if (!isUser) {
-      if (!success) {
+    try {
+      if ("limit" in rateLimiter) {
+        const { success } = await rateLimiter.limit(ip);
+        if (!success && !isUser) throw new Error("RATE_LIMIT");
+      } else {
+        await rateLimiter.consume(ip);
+      }
+    } catch (err: any) {
+      if (!isUser) {
         return NextResponse.json(
           {
             success: false,
             error: "Rate limit exceeded",
-            suggestion: "Sign in with GitHub to get more limits(5000req/hr)",
+            suggestion: "Sign in with GitHub to get more limit (5000 req/hr)",
           },
           { status: 429 },
         );
@@ -73,7 +82,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: data.message || "Failed to fetch GitHub issues",
+          error: data.message || "GitHub API Error",
         },
         { status: githubResponse.status },
       );
@@ -105,7 +114,7 @@ export async function GET(req: NextRequest) {
       };
     });
 
-    await redis.set(cacheKey, issues, { ex: 300 });
+    redis.set(cacheKey, issues, 300);
 
     return NextResponse.json(
       { success: true, issues, source: "API" },
