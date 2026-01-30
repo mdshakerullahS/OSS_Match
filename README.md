@@ -101,8 +101,8 @@ UPSTASH_REDIS_REST_TOKEN=
 
 ```bash
 #With Docker
+docker compose up --build -d
 docker compose exec app npx prisma migrate dev
-docker compose up --build
 
 # Without Docker
 npx prisma migrate dev
